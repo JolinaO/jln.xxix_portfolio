@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jolina Oblea | Multimedia Artist</title>
+    
+    <script>
+        const MEDIA_CONFIG = {
+            // IMAGES: Right-click > "Copy Image Address"
+            home_photo:  "https://drive.google.com/file/d/1i2u_Pq7dTzvUEBR07wJoKBgMNEQY5Gk9/view?usp=drive_link",
+            about_photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000",
+            
+            // VIDEO: Paste your YouTube Embed Link or Direct MP4 link
+            // NOTE: For YouTube, use the "Embed" URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+            capstone_video: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+            
+            fallback_img: "https://via.placeholder.com/500x600/112229/00e5ff?text=MEDIA+NOT+FOUND"
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('main-photo').src = MEDIA_CONFIG.home_photo;
+            document.getElementById('secondary-photo').src = MEDIA_CONFIG.about_photo;
+            document.getElementById('video-player').src = MEDIA_CONFIG.capstone_video;
+
+            // Error handling for images
+            document.querySelectorAll('img').forEach(img => {
+                img.onerror = () => img.src = MEDIA_CONFIG.fallback_img;
+            });
+        });
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #0a151a;
+            --bg-secondary: #112229;
+            --text-bright: #ffffff;
+            --text-dim: #8daab5;
+            --accent-cyan: #00e5ff;
+            --accent-dark: #007a8a;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-bright);
+            font-family: 'Open Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- GLOBAL ANIMATIONS --- */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .hidden-trigger {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition);
+        }
+
+        .show-element { opacity: 1; transform: translateY(0); }
+
+        /* --- NAVIGATION --- */
+        header {
+            background: rgba(10, 21, 26, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--accent-dark);
+        }
+
+        .logo:hover { animation: glitch 0.3s infinite; }
+        .logo { color: var(--accent-cyan); font-family: 'Montserrat'; font-weight: 900; font-size: 1.4rem; cursor: pointer; }
+
+        nav a {
+            color: var(--text-bright);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        nav a:hover { color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); }
+
+        /* --- HERO & ABOUT --- */
+        section { padding: 100px 10%; min-height: 80vh; display: flex; align-items: center; justify-content: space-between; gap: 50px; }
+        
+        .hero-text h1 { font-size: 5rem; font-family: 'Montserrat'; line-height: 1; margin-bottom: 20px; }
+        .profile-img-container {
+            width: 350px;
+            height: 450px;
+            border: 2px solid var(--accent-cyan);
+            position: relative;
+            padding: 15px;
+            animation: float 5s infinite ease-in-out;
+        }
+        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(50%); transition: 0.5s; }
+        .profile-img-container:hover img { filter: grayscale(0%); transform: scale(1.02); }
+
+        /* --- WORK CARDS (IMAGE SRC READY) --- */
+        .works-container { width: 100%; }
+        .work-section-title { font-size: 2.5rem; margin-bottom: 40px; border-left: 5px solid var(--accent-cyan); padding-left: 20px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+
+        .artwork-card {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #1a2d36;
+            transition: var(--transition);
+        }
+
+    .profile-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This prevents your face from looking squished */
+    display: block;
+}
+    
+        .artwork-card:hover { border-color: var(--accent-cyan); transform: scale(1.02); }
+
+        /* Layout Frame for Image */
+        .img-frame {
+            position: relative;
+            height: 250px;
+            background: #000;
+            overflow: hidden;
+            border: 8px solid var(--bg-secondary);
+        }
+
+        .img-frame img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .artwork-card:hover img { opacity: 1; transform: scale(1.1); }
+
+        /* Text Overlay */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,229,255,0.4), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .artwork-card:hover .overlay { opacity: 1; }
+
+        .overlay-title { font-weight: 900; text-transform: uppercase; color: #fff; transform: translateY(20px); transition: 0.4s; }
+        .artwork-card:hover .overlay-title { transform: translateY(0); }
+
+        /* Before/After Placeholders */
+        .ba-container {
+            display: flex;
+            background: #050d11;
+            padding: 10px;
+            gap: 10px;
+        }
+        .ba-box {
+            flex: 1;
+            height: 60px;
+            background: #1a2d36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--accent-cyan);
+            border: 1px dashed var(--accent-dark);
+        }
+
+    
+    
+        /* --- CAPSTONE VIDEO SECTION --- */
+        .video-btn {
+            
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--accent-cyan);
+            color: var(--bg-main);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 12px;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .video-btn:hover { background: #fff; box-shadow: 0 0 15px var(--accent-cyan); }
+    
+        .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+    .video-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--accent-cyan);
+    background: rgba(0,0,0,0.45);
+    transition: background 0.3s ease;
+}
+
+.video-thumb:hover .play-overlay {
+    background: rgba(0,0,0,0.65);
+}
+
+
+
+        /* --- CONTACT --- */
+        /* --- NEW SOCIAL CONTACT SECTION --- */
+        #contact { text-align: center; justify-content: center; flex-direction: column; background: #050d11; padding: 120px 5%; }
+        
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .social-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-bright);
+            transition: var(--transition);
+            width: 120px;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--accent-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            transition: var(--transition);
+            background: rgba(17, 34, 41, 0.5);
+        }
+
+        .social-item:hover .icon-circle {
+            color: #000;
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            transform: translateY(-10px);
+            animation: iconPulse 1.5s infinite;
+        }
+
+        .social-item span {
+            font-family: 'Montserrat';
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .social-item:hover span { opacity: 1; color: var(--accent-cyan); }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--accent-dark); font-size: 0.8rem; opacity: 0.6; }
+
+        @media (max-width: 900px) {
+            section { flex-direction: column; text-align: center; }
+            .hero-text h1 { font-size: 3rem; }
+            .profile-img-container { width: 100%; max-width: 300px; height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">jln.xxix</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#works">Works</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section id="home">
+    <div class="profile-img-container hidden-trigger">
+        <img src="IMG_20260121_153019.jpg" alt="Jolina Oblea" style="width: 100%; height: 100%; object-fit: cover;">
+        
+        <div style="position: absolute; bottom: -20px; left: -20px; background: var(--accent-cyan); color: #000; padding: 10px; font-weight: 900;">📸</div>
+    </div>
+    
+    <div class="hero-text hidden-trigger">
+        <h1 style="color: var(--accent-cyan);">JOLINA OBLEA</h1>
+        <h2 style="color: var(--accent-cyan);">MULTIMEDIA ARTIST</h2>
+        <p style="color: var(--text-dim); max-width: 500px;">Multimedia Artist focusing on digital illustration, photography, motion graphics, editing, and storytelling.</p>
+    </div>
+</section>
+        
+    </section>
+
+    <section id="about" style="background: var(--bg-secondary);">
+        <div class="profile-img-container hidden-trigger" style="animation-delay: 0.2s;">
+            <img src="IMG_20260122_010648.jpg" alt="Jolina Oblea About Photo">
+        </div>
+        <div class="hero-text hidden-trigger">
+            <h2 style="font-size: 3rem; font-family: 'Montserrat';">ABOUT ME</h2>
+            <p style="margin: 20px 0; line-height: 1.8;">
+                I am <strong>Jolina Oblea</strong>, an aspiring multimedia artist with a strong foundation in digital illustration and photography, currently developing my skills in motion graphics and multimedia content creation. I have a keen eye for composition, color, and visual storytelling, and I enjoy translating ideas into clear, engaging visuals that communicate effectively across digital platforms. While I am still building technical experience in motion and video production, I am highly motivated to learn, receptive to feedback, and comfortable refining my work through iteration. I value growth through practice and collaboration and approach each project as an opportunity to improve both creatively and technically. Curious, adaptable, and detail-oriented, I am continuously exploring ways to transform static visuals into dynamic content and contribute meaningfully to creative teams in a professional media environment.
+            </p>
+            <div style="display: flex; gap: 20px; font-weight: 900; color: var(--accent-cyan);">
+                <span>AFTEREFFECTS</span>
+                <span>PREMIERE</span>
+                <span>PHOTOSHOP</span>
+                <span>2DANIMATION</span>
+                <span>CANVA</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="works" style="flex-direction: column; align-items: flex-start;">
+        
+        
+         
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger" style="color: var(--accent-cyan); border-left: 5px solid var(--accent-cyan); padding-left: 15px; margin-bottom: 30px;">
+                   Digital Illustrations
+                  </h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled252_Restored.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled252_Restored.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Petals & Prayer</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">This piece explores the intersection of beauty and sadness. The warm, golden highlights of the character's hair contrast with the cool, somber tones of their expression, suggesting a memory or a wish that is drifting away like the blossoms in the wind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled332_20240711203422.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled332_20240711203422.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Solon from Darkmoon Manhwa (ENHYPEN)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">With a slight, knowing smirk and a gaze that feels like it’s looking through the viewer, this character embodies the charismatic yet dangerous charm of the DARK MOON series. The rich blue tones and subtle lighting highlights emphasize his ethereal and immortal nature.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled334_20240713141030.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled334_20240713141030.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Jaan from Darkmoon Manhwa (ENHYPEN)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Jaan is depicted here with his characteristic silver-grey hair and a calm, authoritative presence. His red eyes offer a hint of the protective and reliable older-brother figure he represents within the group. Dressed in a formal black polo and tie, he embodies the "gentle giant" archetype, possessing immense physical strength and a steadfast spirit that acts as the anchor for his brothers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+              <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled254.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled254.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Shion The Radiant Performer</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Bathed in the glowing lights of a center-stage performance, Shion exudes a magnetic and cheerful charisma. With his signature reddish-pink hair and bright blue eyes, he offers a soft, playful smile while making a "finger heart," a gesture that bridges his identity as both a powerful vampire and a beloved idol figure. The cool blue of his outfit contrasts beautifully against the warm, bokeh-lit background, highlighting his role as the group's vibrant and uplifting spirit who thrives under the spotlight.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled14_20251204143815.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled14_20251204143815.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>The Sunlit Soul</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Wrapped in the warm, hazy glow of a fading sunset, this piece captures a moment of quiet contemplation and peace. The character, with her long, flowing dark hair and gentle amber eyes, leans back against a wall, her gaze drifting toward the horizon as if lost in thought or memory. The soft, canvas-like texture and the painterly sky create a nostalgic, dreamlike atmosphere, highlighting her role as the emotional heart of the story—a light that remains steady even as the shadows of the vampire world close in.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled262_20240127211331.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled262_20240127211331.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Shaiapouf (HunterxHunter</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Adorned with iridescent wings and surrounded by glowing blue butterflies, Shaiapouf stands in a regal, ruffled ensemble that reflects his sophisticated yet fanatical nature. His lime-green hair and antennae contrast with a somber, intense expression, capturing the poetic devotion and cold ruthlessness he holds as a member of the Chimera Ant Royal Guard.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled289_20240223162933.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled289_20240223162933.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>The Ethereal Reach</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">A silver-haired figure gazes upward with vibrant purple eyes, reaching a hand toward an open sky. Set against a lush backdrop of deep green foliage, her expression is filled with a sense of wonder or longing. The flowing purple fabric of her sleeve adds a dramatic, mystical quality to this serene outdoor moment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+      
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Untitled212_20240128150938.png" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Untitled212_20240128150938.png" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Crimson Flare</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">With a bold smirk and a sharp, unwavering gaze, she radiates an absolute confidence that commands the attention of everyone in the room.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+        <div class="works-container" style="margin-top: 80px;">
+            <h2 class="work-section-title hidden-trigger">Photography & Grading</h2>
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="IMG20230329155416.jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="IMG20230329155416.jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>City Wanderer</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">The photo captures a lone figure from a low-angle perspective, standing at the center of a narrow walkway framed by towering, modern skyscrapers. Wearing a dark backpack and looking off to the side, the individual appears small and contemplative against the vast, geometric scale of the city architecture. The bright, cloud-streaked sky above provides a stark, airy contrast to the shadowed, industrial tones of the urban canyon below.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          
+
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="IMG_20250215_175348.jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="IMG_20250215_175348.jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>The Gateway to MOA</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">This high-angle shot captures a bustling multi-lane highway leading toward the Mall of Asia (MOA) in the Philippines during a golden sunset. A dense stream of cars, vans, and a prominent yellow-and-red bus fill the roadway, framed by modern urban architecture and tropical palm trees. The vibrant, glowing sky creates a beautiful backdrop to the daily rhythm of Manila’s evening commute.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="LRM_20230709_080408.jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="LRM_20230709_080408.jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Morning Dew:Nature's Jewel'</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">This close-up photograph highlights a vibrant green leaf heavily adorned with clear, shimmering water droplets. The focus on the leaf's central vein and the varying sizes of the dew creates a sense of freshness and natural purity. Surrounded by soft-focus blades of grass, the image captures a quiet, detailed moment from a damp morning in nature.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="Low Key.jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="Low Key.jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Low Key</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">A low Key shot that shows a deep meaning and emotions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="IMG20230329141402 (1).jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="IMG20230329141402 (1).jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Nature's Tiny Traveler</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">A bright, macro-level shot captures a small white insect resting on a vibrant reddish-orange leaf. The warm tones of the new growth contrast beautifully against the deep green foliage in the background. Sunlight illuminates the waxy texture of the leaves, highlighting the intricate details of this miniature ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="works-container">
+            <h2 class="work-section-title hidden-trigger"></h2>
+            <div class="grid">
+                <div class="artwork-card hidden-trigger">
+                    <a href="IMG_20260109_081923.jpg" target="_blank" style="text-decoration: none; display: block;">
+                    <div class="img-frame">
+                        <img src="IMG_20260109_081923.jpg" alt="Artwork"> <div class="overlay"><div class="overlay-title">Cyber City Concept</div></div>
+                    <div class="overlay">
+                            <div class="overlay-title">View Full Image</div>
+                        </div>
+                    </div>
+                </a>
+                   
+                    <div class="card-content">
+                        <h3>Petals of Purity</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">A crisp white morning glory bloom opens wide, cradling delicate water droplets and a tiny insect within its center. The flower stands out as a bright focal point against a dense, lush backdrop of deep green heart-shaped leaves. Sunlight filters through the garden, highlighting the soft texture of the petals and the fresh, vibrant energy of a new day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+        
+        
+        <div class="works-container" style="margin-top: 80px;">
+    <h2 class="work-section-title hidden-trigger" style="color: var(--accent-cyan);">
+        Short Video
+    </h2>
+
+    <div class="grid">
+        <div class="artwork-card hidden-trigger" style="border: 1px solid var(--accent-cyan);">
+
+            <!-- IMAGE FRAME -->
+            <div class="img-frame"
+                 style="cursor:pointer;"
+                 onclick="window.open(
+                   'https://drive.google.com/file/d/1SfPSEwhxnzIH2VE5rpaxPHOoJibbSHlD/view?usp=drive_link',
+                   '_blank'
+                 )">
+
+                <img
+                  src="https://drive.google.com/file/d/1SfPSEwhxnzIH2VE5rpaxPHOoJibbSHlD/view?usp=drive_link"
+                  alt=""
+                >
+                
+                <div class="overlay"
+                     style="opacity:1; background:rgba(0,0,0,0.55); justify-content:center;">
+                    <i class="fas fa-play"
+                       style="font-size:4rem; color:var(--accent-cyan);"></i>
+                </div>
+            </div>
+
+            <!-- CARD CONTENT -->
+            <div class="card-content">
+                <h3>Sound Design</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">
+                    A sound design activity using free source videos using Adobe Premiere Pro.
+                </p>
+
+                <a href="https://drive.google.com/file/d/1SfPSEwhxnzIH2VE5rpaxPHOoJibbSHlD/view?usp=drive_link"
+                   target="_blank"
+                   class="video-btn">
+                    WATCH FULL VIDEO ▶
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        
+        
+        <!-- IMAGE FRAME DRAGON -->
+
+        <div class="works-container" style="margin-top: 80px;">
+    <h2 class="work-section-title hidden-trigger" style="color: var(--accent-cyan);">
+    </h2>
+        
+        <div class="grid">
+        <div class="artwork-card hidden-trigger" style="border: 1px solid var(--accent-cyan);">
+
+            <!-- IMAGE FRAME -->
+            <div class="img-frame"
+                 style="cursor:pointer;"
+                 onclick="window.open(
+                   'https://drive.google.com/file/d/1YvPBAWwVnAHBmIcaSsxd2Do3ZYCE8fbg/view?usp=drive_link',
+                   '_blank'
+                 )">
+
+                <img
+                  src="https://drive.google.com/file/d/1YvPBAWwVnAHBmIcaSsxd2Do3ZYCE8fbg/view?usp=drive_link"
+                  alt=""
+                >
+
+                <div class="overlay"
+                     style="opacity:1; background:rgba(0,0,0,0.55); justify-content:center;">
+                    <i class="fas fa-play"
+                       style="font-size:4rem; color:var(--accent-cyan);"></i>
+                </div>
+            </div>
+
+            <!-- CARD CONTENT -->
+            <div class="card-content">
+                <h3>VFX Demo</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">
+                    A VFX Demo of a flying Dragon using Adobe After Effects.
+                </p>
+
+                <a href="https://drive.google.com/file/d/1YvPBAWwVnAHBmIcaSsxd2Do3ZYCE8fbg/view?usp=drive_link"
+                   target="_blank"
+                   class="video-btn">
+                    WATCH FULL VIDEO ▶
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        
+        <div class="works-container" style="margin-top: 80px;">
+    <h2 class="work-section-title hidden-trigger" style="color: var(--accent-cyan);">
+    </h2>
+        
+        <div class="grid">
+        <div class="artwork-card hidden-trigger" style="border: 1px solid var(--accent-cyan);">
+
+            <!-- IMAGE FRAME ADS -->
+            <div class="img-frame"
+                 style="cursor:pointer;"
+                 onclick="window.open(
+                   'https://drive.google.com/file/d/1llDdB0arcQH0Lv38VKUvFLYaWW0TfKQO/view?usp=drive_link',
+                   '_blank'
+                 )">
+
+                <img
+                  src="https://drive.google.com/file/d/1llDdB0arcQH0Lv38VKUvFLYaWW0TfKQO/view?usp=drive_link"
+                  alt=""
+                >
+
+                <div class="overlay"
+                     style="opacity:1; background:rgba(0,0,0,0.55); justify-content:center;">
+                    <i class="fas fa-play"
+                       style="font-size:4rem; color:var(--accent-cyan);"></i>
+                </div>
+            </div>
+
+            <!-- CARD CONTENT -->
+            <div class="card-content">
+                <h3>HyperX Keyboard Ads</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">
+                    A 3D HyperX keyboard design ads with a background music and a simple animation. Tools been used: Blender and Adobe Premiere Pro.
+                </p>
+
+                <a href="https://drive.google.com/file/d/1llDdB0arcQH0Lv38VKUvFLYaWW0TfKQO/view?usp=drive_link"
+                   target="_blank"
+                   class="video-btn">
+                    WATCH FULL VIDEO ▶
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        
+        
+        <div class="works-container" style="margin-top: 80px;">
+    <h2 class="work-section-title hidden-trigger" style="color: var(--accent-cyan);">
+        Project Capstones
+    </h2>
+
+    <div class="grid">
+        <div class="artwork-card hidden-trigger" style="border: 1px solid var(--accent-cyan);">
+
+            
+            
+            
+            <!-- IMAGE FRAME BLOOM -->
+            <div class="img-frame" style="cursor:pointer;" 
+     onclick="window.open('https://drive.google.com/file/d/1oiqo0OZax9HXVAcDekoBBYmaXbZbeLoS/view', '_blank')">
+
+    <img src="https://drive.google.com/file/d/1u-rjdBw8e8IBg12akbUKWXlhvR8diKCy/view?usp=drive_link">
+
+    <div class="overlay" style="opacity:1; background:rgba(0,0,0,0.55); justify-content:center;">
+        <i class="fas fa-play" style="font-size:4rem; color:var(--accent-cyan);"></i>
+    </div>
+
+</div>
+
+            <!-- CARD CONTENT -->
+            <div class="card-content">
+                <h3>BLOOM</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">
+                    A young woman who experienced emotional neglect as a child gains a magical companion in the form of a plant and begins a journey of healing and self-discovery. The film explores how unresolved childhood trauma manifests in adulthood through self-doubt, emotional numbness, and people-pleasing behaviors.
+                </p>
+
+                <a href="https://drive.google.com/file/d/1oiqo0OZax9HXVAcDekoBBYmaXbZbeLoS/view?usp=drive_link"
+                   target="_blank"
+                   class="video-btn">
+                    WATCH FULL VIDEO ▶
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    </section>
+
+    <section id="contact">
+        <h2 class="hidden-trigger" style="font-size: 3.5rem; font-family: 'Montserrat';"> LET'S CONNECT☘️</h2>
+        <p class="hidden-trigger" style="color: var(--text-dim); letter-spacing: 3px;">“Ideas grow when they’re shared. If something here caught your eye, let’s connect.”❤️</p>
+        
+        <div class="social-grid hidden-trigger">
+            
+            <a href="https://facebook.com/abcdefghijklmnopqrstuvwxyz1123456789" target="_blank" class="social-item">
+                <div class="icon-circle">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <span>Facebook</span>
+            </a>
+
+            <a href="https://mail.google.com/mail/mu/mp/988/#mn" target="_blank" class="social-item">
+                <div class="icon-circle">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <span>Gmail</span>
+            </a>
+
+            <a href="https://instagram.com/jln.xxix" target="_blank" class="social-item">
+                <div class="icon-circle">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <span>Instagram</span>
+            </a>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 jln.xxix | Portfolio | Visual Design</p>
+    </footer>
+
+    <script>
+        // Reveal animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-element');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.hidden-trigger').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
